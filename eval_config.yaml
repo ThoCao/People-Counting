@@ -1,0 +1,11 @@
+defaults:
+  - _self_
+
+base_path: "./test_results"
+ground_truth_csv: "ground_truth.csv"
+output_csv: "output_metrics.csv"
+model_names:
+  - "yolov5n"
+  - "yolov5s"
+  - "yolov10x"
+  - "yolov10n"

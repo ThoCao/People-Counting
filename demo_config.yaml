@@ -1,0 +1,19 @@
+defaults:
+  - _self_
+
+video_input: "./test_data/People_Counting_Short_Assignment.mp4"
+csv_output: "./test_results/out_result.csv"
+video_output: "./test_results/output_video.mp4"
+debug_imgs: "./test_results/debug_images"
+max_frames: 10
+model: "yolov10x"
+model_type: "yolov10"  # Add the model type here
+save_imgs: true
+save_video: true
+image_show: true
+coco_class_names:
+  - person
+  - bicycle
+  - car
+  - motorcycle
+  - bus
