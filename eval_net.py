@@ -4,7 +4,24 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 import hydra
 from omegaconf import DictConfig
 
-# Function to calculate MSE and MAE
+# Function to calculate precision, recall, and F1 score
+def precision_recall_f1(true_counts, predicted_counts):
+    true_positives = sum(min(gt, pred) for gt, pred in zip(true_counts, predicted_counts))
+    false_positives = sum(max(0, pred - gt) for gt, pred in zip(true_counts, predicted_counts))
+    false_negatives = sum(max(0, gt - pred) for gt, pred in zip(true_counts, predicted_counts))
+    
+    precision = true_positives / (true_positives + false_positives) if (true_positives + false_positives) > 0 else 0
+    recall = true_positives / (true_positives + false_negatives) if (true_positives + false_negatives) > 0 else 0
+    f1 = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+    
+    # Round to 4 decimal places
+    precision = round(precision, 4)
+    recall = round(recall, 4)
+    f1 = round(f1, 4)
+    
+    return precision, recall, f1
+
+# Function to calculate MSE, MAE, Precision, Recall, and F1 score
 def evaluate_metrics(base_path: str, ground_truth_csv: str, output_csv: str, model_names: list):
     # Construct the full path for the ground truth CSV file
     ground_truth_csv_path = os.path.join(base_path, ground_truth_csv)
@@ -24,8 +41,6 @@ def evaluate_metrics(base_path: str, ground_truth_csv: str, output_csv: str, mod
         
         # Read the result CSV file
         result_df = pd.read_csv(result_csv_path)
-        
-        # Assuming the 'People Count' is the column to evaluate
         true_counts = gt_df['People Count'].values
         predicted_counts = result_df['People Count'].values
         
@@ -33,11 +48,17 @@ def evaluate_metrics(base_path: str, ground_truth_csv: str, output_csv: str, mod
         mse = mean_squared_error(true_counts, predicted_counts)
         mae = mean_absolute_error(true_counts, predicted_counts)
         
+        # Calculate Precision, Recall, and F1 score
+        precision, recall, f1 = precision_recall_f1(true_counts, predicted_counts)
+        
         # Prepare the results
         results = {
             'Model Name': model_name,
             'Mean Squared Error': mse,
-            'Mean Absolute Error': mae
+            'Mean Absolute Error': mae,
+            'Precision': precision,
+            'Recall': recall,
+            'F1 Score': f1
         }
         
         metrics.append(results)
