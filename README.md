@@ -45,9 +45,11 @@ model_names:
   - "yolov5n"
   - "yolov5s"
   - "yolov10x"
-  - "yolov10n"
+  - "yolov10n"()
 ```
 #### Demo
+* Run [colab demo](https://colab.research.google.com/drive/1s0N4sLrBQcTm7MYXuGjwRC9QlGCbpWz0?usp=sharing)
+
 To run an experiment on a video, configure the **demo_config.yaml** for the Hydra settings:
 ```
 python demo_net.py

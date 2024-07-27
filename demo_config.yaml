@@ -8,7 +8,7 @@ debug_imgs: "./test_results/debug_images"
 max_frames: 20
 model: "yolov5x"      # Add model name here: ["yolov10n/s/m/b/l/x", yolov5n/s/m/x]
 model_type: "yolov5"  # Add the model type here: ["yolov5", "yolov10"]
-save_imgs: false
+save_imgs: true
 save_video: false
 image_show: false
 coco_class_names:
