@@ -106,13 +106,11 @@ def handle_frame_processing(cfg: DictConfig, cap: cv2.VideoCapture, writer: csv.
             break
 
         count += 1
-        frame_name = f"frame_{count}"
-        frame_path = os.path.join(cfg.debug_imgs, frame_name + ".png")
-        print(f"Frame Count: {count}")
-
         detected_objects = process_frame(frame, model, cfg.coco_class_names, cfg.model_type, device, non_max_suppression)
+        print(f"Frame Count: {count}")
         print(f"Detected Objects: {detected_objects}")
 
+        frame_name = f"frame_{count}"
         writer.writerow([frame_name, detected_objects])
 
         # Draw the number of detected people on the image
@@ -120,6 +118,7 @@ def handle_frame_processing(cfg: DictConfig, cap: cv2.VideoCapture, writer: csv.
 
         # Save debug image if enabled
         if cfg.save_imgs:
+            frame_path = os.path.join(cfg.debug_imgs, frame_name + ".png")
             cv2.imwrite(frame_path, frame)
 
         ctime = time.time()

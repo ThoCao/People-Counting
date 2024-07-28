@@ -45,16 +45,20 @@ model_names:
   - "yolov5n"
   - "yolov5s"
   - "yolov10x"
-  - "yolov10n"()
+  - "yolov10n"
 ```
 #### Demo
-* Run [colab demo](https://colab.research.google.com/drive/1s0N4sLrBQcTm7MYXuGjwRC9QlGCbpWz0?usp=sharing)
+* Gogole Colab Execution: Access the [colab demo](https://colab.research.google.com/drive/1s0N4sLrBQcTm7MYXuGjwRC9QlGCbpWz0?usp=sharing)
+* Local Execuation
 
 To run an experiment on a video, configure the **demo_config.yaml** for the Hydra settings:
 ```
 python demo_net.py
 ```
 ![Net Demo Output](media/net_demo_output.png)
+* **Debug images:** Includes a drawn bounding box and the number of people per frame.
+* **Debug video:** A video with drawn bounding boxes.
+* **CSV file:** Contains results storing the number of bounding boxes per frame.
 
 To evaluate model performance, configure the **eval_config.yaml** for the Hydra settings:
 ```
