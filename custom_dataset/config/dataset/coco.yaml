@@ -1,0 +1,14 @@
+dataset:
+  dataset_type: COCO
+  files_to_download:
+    val2017.zip: http://images.cocodataset.org/zips/val2017.zip
+    annotations_trainval2017.zip: http://images.cocodataset.org/annotations/annotations_trainval2017.zip
+  data_dir: ./coco
+  annotations_dir: ./coco/annotations
+  image_dir: ./coco/val2017/val2017
+  annotations_file: ./coco/annotations/instances_val2017.json
+
+sample_size: 50
+batch_size: 1
+num_workers: 4
+display_limit: 10

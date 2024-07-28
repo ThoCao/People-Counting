@@ -1,0 +1,7 @@
+defaults:
+  - dataset: crowdhuman  # Change to 'crowdhuman' to use the CrowdHuman dataset
+
+sample_size: 50
+batch_size: 1
+num_workers: 4
+display_limit: 10
