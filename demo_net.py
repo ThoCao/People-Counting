@@ -142,7 +142,7 @@ def handle_frame_processing(cfg: DictConfig, cap: cv2.VideoCapture, writer: csv.
             print("Reached max frames. Exiting.")
             break
 
-@hydra.main(version_base=None, config_path=".", config_name="demo_config")
+@hydra.main(version_base=None, config_path="./cfg", config_name="demo_config")
 def main(cfg: DictConfig) -> None:
     # Ensure all paths are correctly expanded
     cfg.video_input = os.path.abspath(cfg.video_input)

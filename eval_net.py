@@ -71,7 +71,7 @@ def evaluate_metrics(base_path: str, ground_truth_csv: str, output_csv: str, mod
     print(results_df)
 
 # Hydra main function to read configuration
-@hydra.main(version_base=None, config_path=".", config_name="eval_config")
+@hydra.main(version_base=None, config_path="./cfg", config_name="eval_config")
 def main(cfg: DictConfig) -> None:
     evaluate_metrics(cfg.base_path, cfg.ground_truth_csv, cfg.output_csv, cfg.model_names)
 

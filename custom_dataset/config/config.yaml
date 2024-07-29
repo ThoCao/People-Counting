@@ -1,5 +1,5 @@
 defaults:
-  - dataset: crowdhuman  # Change to 'crowdhuman' to use the CrowdHuman dataset
+  - dataset: coco  # Change to 'crowdhuman' to use the CrowdHuman dataset
 
 sample_size: 50
 batch_size: 1
