@@ -5,6 +5,7 @@ video_input: "./test_data/People_Counting_Short_Assignment.mp4"
 csv_output: "./test_results/out_result.csv"
 video_output: "./test_results/output_video.mp4"
 debug_imgs: "./test_results/debug_images"
+tracker_model: "./models/osnet_x0_25_msmt17.pt"
 max_frames: 20
 model: "yolov5x"      # Add model name here: ["yolov10n/s/m/b/l/x", yolov5n/s/m/x]
 model_type: "yolov5"  # Add the model type here: ["yolov5", "yolov10"]

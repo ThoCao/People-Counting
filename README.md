@@ -1,11 +1,11 @@
-# People-Counting
+# Unique-People-Counting
 **Author(s):**
 * Tho Cao
 
 **Status:** Implementing
 ![People Counting Output](media/frame_1.png)
 ### Goals
-This codebase provides the experiment configs, analytics scripts to test and evaluate models for counting people, as well export result to another format (e.g. debug images, csv files)
+This codebase provides the experiment configs, analytics scripts to test and evaluate models for counting unique-people, as well export result to another format (e.g. debug images, csv files)
 ### Report
 [Doc Report](https://docs.google.com/document/d/1EiTHYLZ3Glm-0KqSXysIZBPLFRTlHXsQCsbUflOEVsQ/edit?usp=sharing)
 ### Installation
@@ -56,9 +56,9 @@ To run an experiment on a video, configure the **demo_config.yaml** for the Hydr
 python demo_net.py
 ```
 ![Net Demo Output](media/net_demo_output.png)
-* **Debug images:** Includes a drawn bounding box and the number of people per frame.
+* **Debug images:** A bounding box is drawn around each detected person in the video, and the count of unique individuals is updated at each frame.
 * **Debug video:** A video with drawn bounding boxes.
-* **CSV file:** Contains results storing the number of bounding boxes per frame.
+* **CSV file:** Contains results storing the number of unique-people is updated at each frame.
 
 To evaluate model performance, configure the **eval_config.yaml** for the Hydra settings:
 ```
