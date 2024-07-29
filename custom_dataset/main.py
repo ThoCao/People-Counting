@@ -20,6 +20,12 @@ from data_manager import DatasetManager
 from my_utils import verify_labels, draw_boxes
 
 def main(cfg: Dict[str, Any]) -> None:
+    """
+    Main function to process and verify dataset images.
+
+    Args:
+        cfg (Dict[str, Any]): Configuration dictionary containing dataset settings.
+    """
     dataset_cfg = cfg.dataset  # Access the nested dataset configuration
     
     # Initialize DatasetManager with the configuration
@@ -40,15 +46,12 @@ def main(cfg: Dict[str, Any]) -> None:
     # Verify labels by displaying images with bounding boxes
     verify_labels(dataset_cfg)
 
-    # Draw bounding boxes on samples and display them using matplotlib
     for idx, (images, targets) in enumerate(dataloader):
         if idx >= cfg.display_limit:
             break
 
         # Convert the tensor image to PIL image
         image = transforms.ToPILImage()(images[0])
-
-        # Access the bounding boxes
         boxes = targets['boxes'].tolist()
 
         # Print debug information
@@ -59,7 +62,6 @@ def main(cfg: Dict[str, Any]) -> None:
         # Draw the boxes on the image
         image_with_boxes = draw_boxes(image, boxes)
 
-        # Display the image using matplotlib
         plt.imshow(image_with_boxes)
         plt.axis('off')
         plt.show()

@@ -4,6 +4,16 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw
 
 def draw_boxes(image: Image.Image, boxes: List[Tuple[int, int, int, int]]) -> Image.Image:
+    """
+    Draws bounding boxes on the given image.
+
+    Args:
+        image (Image.Image): The image on which to draw the bounding boxes.
+        boxes (List[Tuple[int, int, int, int]]): A list of bounding boxes, each represented by a tuple (xmin, ymin, width, height).
+
+    Returns:
+        Image.Image: The image with bounding boxes drawn on it.
+    """
     draw = ImageDraw.Draw(image)
     for box in boxes:
         if len(box) == 0:  # Skip empty boxes
@@ -20,6 +30,13 @@ def draw_boxes(image: Image.Image, boxes: List[Tuple[int, int, int, int]]) -> Im
     return image
 
 def verify_labels(cfg: Dict[str, Any], display_limit: int = 10) -> None:
+    """
+    Verifies the labels by drawing bounding boxes on images and displaying them.
+
+    Args:
+        cfg (Dict[str, Any]): Configuration dictionary containing dataset settings.
+        display_limit (int): Number of images to display for verification. Default is 10.
+    """
     dataset_cfg = cfg['dataset']  # Access the nested dataset configuration
     data_dir = dataset_cfg['data_dir']
     image_dir = dataset_cfg['image_dir']

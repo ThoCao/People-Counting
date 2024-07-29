@@ -4,8 +4,17 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 import hydra
 from omegaconf import DictConfig
 
-# Function to calculate precision, recall, and F1 score
 def precision_recall_f1(true_counts, predicted_counts):
+    """
+    Calculates precision, recall, and F1 score based on true and predicted counts.
+
+    Args:
+        true_counts (list): List of true counts.
+        predicted_counts (list): List of predicted counts.
+
+    Returns:
+        tuple: Precision, recall, and F1 score rounded to 4 decimal places.
+    """
     true_positives = sum(min(gt, pred) for gt, pred in zip(true_counts, predicted_counts))
     false_positives = sum(max(0, pred - gt) for gt, pred in zip(true_counts, predicted_counts))
     false_negatives = sum(max(0, gt - pred) for gt, pred in zip(true_counts, predicted_counts))
@@ -21,8 +30,16 @@ def precision_recall_f1(true_counts, predicted_counts):
     
     return precision, recall, f1
 
-# Function to calculate MSE, MAE, Precision, Recall, and F1 score
 def evaluate_metrics(base_path: str, ground_truth_csv: str, output_csv: str, model_names: list):
+    """
+    Evaluates metrics for people count predictions and saves results to a CSV file.
+
+    Args:
+        base_path (str): Base path where CSV files are located.
+        ground_truth_csv (str): Filename of the ground truth CSV.
+        output_csv (str): Filename for the output CSV to save results.
+        model_names (list): List of model names to evaluate.
+    """
     # Construct the full path for the ground truth CSV file
     ground_truth_csv_path = os.path.join(base_path, ground_truth_csv)
     
@@ -70,9 +87,14 @@ def evaluate_metrics(base_path: str, ground_truth_csv: str, output_csv: str, mod
     print(f"Metrics saved to {output_csv_path}")
     print(results_df)
 
-# Hydra main function to read configuration
 @hydra.main(version_base=None, config_path="./cfg", config_name="eval_config")
 def main(cfg: DictConfig) -> None:
+    """
+    Main function to read configuration and evaluate metrics.
+
+    Args:
+        cfg (DictConfig): Configuration dictionary containing evaluation settings.
+    """
     evaluate_metrics(cfg.base_path, cfg.ground_truth_csv, cfg.output_csv, cfg.model_names)
 
 if __name__ == "__main__":

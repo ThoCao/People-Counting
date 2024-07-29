@@ -5,6 +5,15 @@ import torch
 from PIL import Image
 
 class CocoDataset(Dataset):
+    """
+        Initializes the CocoDataset.
+
+        Args:
+            img_ids (List[int]): List of image IDs to be included in the dataset.
+            dataset (Any): The COCO dataset object.
+            image_dir (str): Directory where images are stored.
+            transform (Optional[Any]): Optional transform to be applied on an image.
+    """
     def __init__(self, img_ids: List[int], dataset: Any, image_dir: str, transform: Optional[Any] = None) -> None:
         self.img_ids = img_ids
         self.dataset = dataset
@@ -35,6 +44,15 @@ class CocoDataset(Dataset):
         return img, target
 
 class CrowdHumanDataset(Dataset):
+    """
+        Initializes the CrowdHumanDataset.
+
+        Args:
+            img_ids (List[str]): List of image IDs to be included in the dataset.
+            dataset (Dict[str, Any]): The CrowdHuman dataset dictionary.
+            image_dir (str): Directory where images are stored.
+            transform (Optional[Any]): Optional transform to be applied on an image.
+    """
     def __init__(self, img_ids: List[str], dataset: Dict[str, Any], image_dir: str, transform: Optional[Any] = None) -> None:
         self.img_ids = img_ids
         self.dataset = dataset

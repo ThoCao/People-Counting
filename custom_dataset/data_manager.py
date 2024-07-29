@@ -10,6 +10,12 @@ from custom_datasets import CocoDataset, CrowdHumanDataset
 from torch.utils.data import Dataset
 
 class DatasetManager:
+    """
+        Initializes the DatasetManager with a configuration dictionary.
+
+        Args:
+            cfg (Dict[str, Any]): Configuration dictionary containing dataset settings.
+    """
     def __init__(self, cfg: Dict[str, Any]) -> None:
         dataset_cfg = cfg['dataset']  # Access the nested dataset configuration
         self.data_dir = dataset_cfg['data_dir']
@@ -37,6 +43,12 @@ class DatasetManager:
         os.makedirs(self.label_dir, exist_ok=True)
 
     def _download_and_extract_files(self, files_to_download: Dict[str, str]) -> None:
+        """
+        Downloads and extracts dataset files.
+
+        Args:
+            files_to_download (Dict[str, str]): Dictionary with file names as keys and URLs as values.
+        """
         for file_name, url in files_to_download.items():
             file_path = os.path.join(self.data_dir, file_name)
             if not os.path.exists(file_path):
@@ -49,6 +61,13 @@ class DatasetManager:
                     self._extract_to_target(zip_ref, file_name)
 
     def _extract_to_target(self, zip_ref, file_name):
+        """
+        Extracts files from a ZIP archive to the target directory.
+
+        Args:
+            zip_ref: ZIP file reference.
+            file_name (str): Name of the ZIP file being extracted.
+        """
         if self.dataset_type == 'COCO':
             target_path = self.annotations_dir if 'annotations' in file_name else self.image_dir
         elif self.dataset_type == 'CrowdHuman':
@@ -79,6 +98,12 @@ class DatasetManager:
                     f.write(src.read()) 
 
     def _load_crowdhuman_annotations(self) -> Dict[str, Any]:
+        """
+        Loads CrowdHuman dataset annotations from a file.
+
+        Returns:
+            Dict[str, Any]: Parsed annotations as a dictionary.
+        """
         with open(self.annotations_file, 'r') as f:
             lines = f.readlines()
             annotations = [json.loads(line) for line in lines if line.strip()]
@@ -97,6 +122,16 @@ class DatasetManager:
         return dataset
 
     def get_img_ids(self, category_name: Optional[str] = None, sample_size: int = 50) -> List[int]:
+        """
+        Retrieves a list of image IDs, optionally filtered by category name and sampled.
+
+        Args:
+            category_name (Optional[str]): Name of the category to filter by.
+            sample_size (int): Number of image IDs to sample.
+
+        Returns:
+            List[int]: List of sampled image IDs.
+        """
         if self.dataset_type == 'COCO':
             cat_ids = self.dataset.getCatIds(catNms=[category_name]) if category_name else []
             img_ids = self.dataset.getImgIds(catIds=cat_ids)
@@ -106,12 +141,28 @@ class DatasetManager:
         return random.sample(img_ids, min(sample_size, len(img_ids)))
 
     def create_dataset(self, img_ids: List[int], transform: Optional[Any] = None) -> Dataset:
+        """
+        Creates a dataset object based on the image IDs and optional transforms.
+
+        Args:
+            img_ids (List[int]): List of image IDs to include in the dataset.
+            transform (Optional[Any]): Optional transform to apply to the images.
+
+        Returns:
+            Dataset: Custom dataset object.
+        """
         if self.dataset_type == 'COCO':
             return CocoDataset(img_ids, self.dataset, self.image_dir, transform)
         elif self.dataset_type == 'CrowdHuman':
             return CrowdHumanDataset(img_ids, self.dataset, self.image_dir, transform)
 
     def save_labels(self, img_ids: List[int]) -> None:
+        """
+        Saves labels for the images in YOLO format.
+
+        Args:
+            img_ids (List[int]): List of image IDs to save labels for.
+        """
         if self.dataset_type == 'COCO':
             dataset = CocoDataset(img_ids, self.dataset, self.image_dir)
             for img_id in img_ids:

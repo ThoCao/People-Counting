@@ -19,8 +19,17 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'yolov5'))
 # Initialize the random seed
 set_random_seed(42)
 
-# Function to build and load the model
 def build_model(model_type: str, model_name: str):
+    """
+    Builds and loads a model based on the specified type and name.
+
+    Args:
+        model_type (str): The type of model (e.g., 'yolov10', 'yolov5').
+        model_name (str): The name of the model to load.
+
+    Returns:
+        tuple: The loaded model, the device it is on, and a non-max suppression function (if applicable).
+    """
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     if model_type == "yolov10":
         from ultralytics import YOLOv10
@@ -35,8 +44,19 @@ def build_model(model_type: str, model_name: str):
     else:
         raise ValueError("Unsupported model type")
 
-# Process a frame with YOLOv10
 def process_frame_yolov10(frame: np.ndarray, model, coco_class_names: List[str], device: torch.device) -> int:
+    """
+    Processes a frame using the YOLOv10 model to detect objects.
+
+    Args:
+        frame (np.ndarray): The input frame to process.
+        model: The YOLOv10 model.
+        coco_class_names (List[str]): List of COCO class names.
+        device (torch.device): The device to run the model on.
+
+    Returns:
+        int: The number of detected objects.
+    """
     original_h, original_w = frame.shape[:2]
     img = cv2.resize(frame, (640, 640))
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -62,8 +82,20 @@ def process_frame_yolov10(frame: np.ndarray, model, coco_class_names: List[str],
 
     return detected_objects
 
-# Process a frame with YOLOv5
 def process_frame_yolov5(frame: np.ndarray, model, coco_class_names: List[str], device: torch.device, non_max_suppression) -> int:
+    """
+    Processes a frame using the YOLOv5 model to detect objects.
+
+    Args:
+        frame (np.ndarray): The input frame to process.
+        model: The YOLOv5 model.
+        coco_class_names (List[str]): List of COCO class names.
+        device (torch.device): The device to run the model on.
+        non_max_suppression: Function to apply non-max suppression on the model predictions.
+
+    Returns:
+        int: The number of detected objects.
+    """
     img = resize_image(frame)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = torch.from_numpy(img).to(device)
@@ -85,8 +117,21 @@ def process_frame_yolov5(frame: np.ndarray, model, coco_class_names: List[str], 
 
     return detected_objects
 
-# Process a single frame and detect objects
 def process_frame(frame: np.ndarray, model, coco_class_names: List[str], model_type: str, device: torch.device = None, non_max_suppression=None) -> int:
+    """
+    Processes a single frame to detect objects based on the model type.
+
+    Args:
+        frame (np.ndarray): The input frame to process.
+        model: The model to use for detection.
+        coco_class_names (List[str]): List of COCO class names.
+        model_type (str): The type of model ('yolov10' or 'yolov5').
+        device (torch.device, optional): The device to run the model on.
+        non_max_suppression (optional): Non-max suppression function for YOLOv5.
+
+    Returns:
+        int: The number of detected objects.
+    """
     if model_type == "yolov10":
         return process_frame_yolov10(frame, model, coco_class_names, device)
     elif model_type == "yolov5":
@@ -94,8 +139,19 @@ def process_frame(frame: np.ndarray, model, coco_class_names: List[str], model_t
     else:
         raise ValueError("Unsupported model type")
 
-# Handle frame processing logic
 def handle_frame_processing(cfg: DictConfig, cap: cv2.VideoCapture, writer: csv.writer, model, device: torch.device, non_max_suppression=None, out: cv2.VideoWriter = None) -> None:
+    """
+    Processing frames from a video capture, detecting objects, and writing results.
+
+    Args:
+        cfg (DictConfig): Configuration object.
+        cap (cv2.VideoCapture): Video capture object.
+        writer (csv.writer): CSV writer object for writing results.
+        model: The model to use for detection.
+        device (torch.device): The device to run the model on.
+        non_max_suppression (optional): Non-max suppression function for YOLOv5.
+        out (cv2.VideoWriter, optional): Video writer object for saving output video.
+    """
     count = 0
     ptime = time.time()
 
@@ -144,6 +200,12 @@ def handle_frame_processing(cfg: DictConfig, cap: cv2.VideoCapture, writer: csv.
 
 @hydra.main(version_base=None, config_path="./cfg", config_name="demo_config")
 def main(cfg: DictConfig) -> None:
+    """
+    Main function to set up the configuration and execute the frame processing.
+
+    Args:
+        cfg (DictConfig): Configuration object.
+    """
     # Ensure all paths are correctly expanded
     cfg.video_input = os.path.abspath(cfg.video_input)
     cfg.csv_output = os.path.abspath(cfg.csv_output)
