@@ -66,12 +66,17 @@ python eval_net.py
 ```
 ![Model Eval Output](media/model_eval_output.png)
 #### Custom Training 
-It is recommended to use the original tutorial.
+* **Preparing custom dataset**: Please follow the instructions in the [custom_dataset](https://github.com/ThoCao/People-Counting/tree/main/custom_dataset) folder to download the people dataset.
+* **Train custom data**: It is recommended to use the [original tutorial](https://docs.ultralytics.com/yolov5/tutorials/train_custom_data/).
+
+For the yolov5 model:
+```
+python train.py --img 640 --epochs 3 --data coco128.yaml --weights yolov5s.pt
+```
+For the yolov10 model:
 ```
 yolo detect train data=coco.yaml model=yolov10n/s/m/b/l/x.yaml epochs=500 batch=256 imgsz=640 device=0,1,2,3,4,5,6,7
 ```
-For detailed instructions on training with a custom dataset, please follow this guide. [How to Train YOLOv10 Object Detection on a Custom Dataset](https://github.com/roboflow/notebooks/blob/main/notebooks/train-yolov10-object-detection-on-custom-dataset.ipynb)
-
 ### Future Work
 
 ### References

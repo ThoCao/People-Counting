@@ -46,10 +46,37 @@ class DatasetManager:
             if file_name.endswith('.zip') and os.path.exists(file_path):
                 print(f'Extracting {file_name}...')
                 with zipfile.ZipFile(file_path, 'r') as zip_ref:
-                    if 'annotations' in file_name:
-                        zip_ref.extractall(self.annotations_dir)
-                    else:
-                        zip_ref.extractall(self.image_dir)
+                    self._extract_to_target(zip_ref, file_name)
+
+    def _extract_to_target(self, zip_ref, file_name):
+        if self.dataset_type == 'COCO':
+            target_path = self.annotations_dir if 'annotations' in file_name else self.image_dir
+        elif self.dataset_type == 'CrowdHuman':
+            if 'annotations' in file_name:
+                target_path = self.annotations_dir
+            elif 'Images' in file_name:
+                target_path = self.image_dir
+            else:
+                target_path = self.label_dir
+        else:
+            target_path = self.data_dir
+
+        # Extract files directly to the target path without creating extra subfolders
+        for member in zip_ref.namelist():
+            filename = os.path.basename(member)
+            if not filename:
+                continue
+            source = zip_ref.open(member)
+            # Remove leading directory components from the member name
+            relative_path = os.path.relpath(member, start=os.path.commonpath(zip_ref.namelist()))
+            if 'annotations' in file_name:
+                target = os.path.join(self.annotations_dir, os.path.basename(relative_path))
+            else:
+                target = os.path.join(self.image_dir, os.path.basename(relative_path))
+            os.makedirs(os.path.dirname(target), exist_ok=True)
+            with open(target, "wb") as f:
+                with source as src:
+                    f.write(src.read()) 
 
     def _load_crowdhuman_annotations(self) -> Dict[str, Any]:
         with open(self.annotations_file, 'r') as f:

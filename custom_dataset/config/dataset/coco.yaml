@@ -5,7 +5,7 @@ dataset:
     annotations_trainval2017.zip: http://images.cocodataset.org/annotations/annotations_trainval2017.zip
   data_dir: ./coco
   annotations_dir: ./coco/annotations
-  image_dir: ./coco/val2017/val2017
+  image_dir: ./coco/val2017
   annotations_file: ./coco/annotations/instances_val2017.json
 
 sample_size: 50

@@ -38,8 +38,9 @@ The architecture of this codebase currently supports COCO and CrowdHuman dataset
 └── demo_data.ipynb
 ```
 ### Demo
-* Google Colab Execute: [colab demo]
-* Local Execuation
+* Google Colab Execute: [colab demo](https://colab.research.google.com/drive/1cYRY_84i8ayMkBsm80jdIuj6sp_PRKv6?usp=sharing)
+* Local Execuation: Change directory to custom_dataset
+
 To run an experiment, configure the **config.yaml** for the Hydra settings:
 ```
 python main.py
